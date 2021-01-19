@@ -1,3 +1,3 @@
 - [Installation](./doc/doc_en/installation_en.md)
 - [Quick Start](./doc/doc_en/quickstart_en.md)
-- A very simple way is to run ./tool/infer/predict_system.py
+- A very simple way is to run ./tool/infer/predict_system.py, as in "quick start"
