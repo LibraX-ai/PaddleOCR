@@ -109,13 +109,14 @@ class TextSystem(object):
         logger.info("rec_res num  : {}, elapse : {}".format(
             len(rec_res), elapse))
         # self.print_draw_crop_rec_res(img_crop_list, rec_res)
-        filter_boxes, filter_rec_res = [], []
-        for box, rec_reuslt in zip(dt_boxes, rec_res):
+        filter_boxes, filter_rec_res, filter_angle_list = [], [], []
+        for box, rec_reuslt, angle in zip(dt_boxes, rec_res, angle_list):
             text, score = rec_reuslt
             if score >= self.drop_score:
                 filter_boxes.append(box)
                 filter_rec_res.append(rec_reuslt)
-        return filter_boxes, filter_rec_res
+                filter_angle_list.append(angle)
+        return filter_boxes, filter_rec_res, filter_angle_list
 
 
 def sorted_boxes(dt_boxes):
@@ -153,10 +154,13 @@ def main(args):
             logger.info("error in loading image:{}".format(image_file))
             continue
         starttime = time.time()
-        dt_boxes, rec_res = text_sys(img)
+        dt_boxes, rec_res, angle_list = text_sys(img)
+        print(angle_list)
         elapse = time.time() - starttime
         logger.info("Predict time of %s: %.3fs" % (image_file, elapse))
 
+        for i in range(len(rec_res)):
+            logger.info("{}, {:.3f} {}".format(rec_res[i][0], rec_res[i][1], angle_list[i]))
         for text, score in rec_res:
             logger.info("{}, {:.3f}".format(text, score))
 
