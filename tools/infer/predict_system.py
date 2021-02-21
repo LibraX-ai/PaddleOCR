@@ -13,7 +13,7 @@
 # limitations under the License.
 import os
 import sys
-
+import string
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
 sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
@@ -155,15 +155,12 @@ def main(args):
             continue
         starttime = time.time()
         dt_boxes, rec_res, angle_list = text_sys(img)
-        print(angle_list)
         elapse = time.time() - starttime
         logger.info("Predict time of %s: %.3fs" % (image_file, elapse))
-
         for i in range(len(rec_res)):
             logger.info("{}, {:.3f} {}".format(rec_res[i][0], rec_res[i][1], angle_list[i]))
-        for text, score in rec_res:
-            logger.info("{}, {:.3f}".format(text, score))
-
+            if rec_res[i][0].find('LICENCE')>=0:
+               print("this is a licence! please go to step 2")
         if is_visualize:
             image = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
             boxes = dt_boxes
